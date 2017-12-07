@@ -1,0 +1,53 @@
+<ol class="breadcrumb">
+	<li>JIRA</li>
+	<li>Servicios TEMPO</li>
+	<li class="active">Periodos de trabajo</li>
+</ol>
+
+<div class="row" style="margin: 10px">
+	<h3><i class="fa fa-paper-plane" aria-hidden="true"></i> Periodos pendientes de acción</h3>
+</div>
+<div class="row" style="margin: 10px">
+	<table class="table table-hover" style="margin-bottom: 0">
+		<tr>
+			<th>Periodo</th>
+			<th>Estado</th>
+			<th>Registrado</th>
+			<th>Total</th>
+			<th>Revisor</th>
+			<th></th>
+		</tr>
+		<tr ng-repeat="obj in approvalStatuses" ng-show="obj.status == 'open' || obj.status == 'ready_to_submit'">
+			<td style="vertical-align: middle">{{ obj.smartDateString }}</td>
+			<td style="vertical-align: middle">{{ translateStatus(obj.status) }}</td>
+			<td style="vertical-align: middle">{{ secondsFormat(obj.workedSeconds) }}</td>
+			<td style="vertical-align: middle">{{ secondsFormat(obj.requiredSeconds) }}</td>
+			<td style="vertical-align: middle"><select class="form-control" ng-model="obj.supervisor" ng-options="i.userName as i.displayName for i in supervisors"></select></td>
+			<td style="vertical-align: middle"><button class="btn btn-success btn-sm" ng-click="sendStatus(obj.user.name, obj.period.dateFrom, obj.supervisor)">Enviar</button></td>
+		</tr>
+	</table>
+</div>
+
+<div class="row" style="margin: 10px">
+	<h3><i class="fa fa-check" aria-hidden="true"></i> Periodos finalizados</h3>
+</div>
+<div class="row" style="margin: 10px">
+	<table class="table table-hover" style="margin-bottom: 0">
+		<tr>
+			<th>Periodo</th>
+			<th>Estado</th>
+			<th>Registrado</th>
+			<th>Total</th>
+			<th>Aprobador</th>
+			<th>Comentario</th>
+		</tr>
+		<tr ng-repeat="obj in approvalStatuses" ng-hide="obj.status == 'open' || obj.status == 'ready_to_submit'">
+			<td style="vertical-align: middle">{{ obj.smartDateString }}</td>
+			<td style="vertical-align: middle">{{ translateStatus(obj.status) }}</td>
+			<td style="vertical-align: middle">{{ secondsFormat(obj.workedSeconds) }}</td>
+			<td style="vertical-align: middle">{{ secondsFormat(obj.requiredSeconds) }}</td>
+			<td style="vertical-align: middle">{{ obj.action.reviewer.displayName }}</td>
+			<td style="vertical-align: middle">{{ obj.action.comment }}</td>
+		</tr>
+	</table>
+</div>

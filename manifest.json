@@ -1,0 +1,25 @@
+﻿{
+	"manifest_version": 2,
+	"name": "JIRA Custom",
+	"author": "Alejandro M. Pinto Rodriguez",
+	"version": "2017.11.17",
+	"description": "Complemento de JIRA para gestiones simples e informacion simplificada",
+	"app": {
+		"background": {
+			"scripts": ["background.js"]
+		},
+		"isDebug": false
+	},
+	"icons": {
+		"16": "icons/time32.png",
+        "48": "icons/time64.png",
+        "128": "icons/time128.png" 
+	},
+	"permissions": [
+		"unlimitedStorage",
+		"notifications",
+		"storage",
+		"http://*/*",
+		"https://*/*"
+	]
+}

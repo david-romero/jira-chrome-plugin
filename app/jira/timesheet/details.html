@@ -1,0 +1,69 @@
+<ol class="breadcrumb">
+	<li>JIRA</li>
+	<li>Servicios JIRA</li>
+	<li><a href="#/jira/timesheet">Tiempo imputado</a></li>
+	<li>Detalle</li>
+	<li class="active">{{ issue.key }}</li>
+</ol>
+<div class="row" ng-show="cargado">
+	<div class="col-xs-12">
+		<h3>{{ issue.key }} - {{ issue.summary }}</h3>
+	</div>
+	<div class="col-xs-8 col-md-9">
+		<h4>Descripci&oacute;n</h4>		
+		<div ng-bind-html="issue.description | ToHTML"></div>
+		<hr />
+		<h4>Comentarios</h4>
+		<div ng-show="issue.comments.length == 0">
+			<hr>
+			<p>Todavía no hay comentarios en esta petición.</p>
+		</div>
+		<div ng-repeat="comment in issue.comments">
+			<a role="button" data-toggle="collapse" data-target="#{{ comment.id }}" aria-expanded="false" aria-controls="collapseExample" class="comment">
+				<i class="fa fa-chevron-down" aria-hidden="true"></i>
+				<i class="fa fa-chevron-up" aria-hidden="true"></i>
+				{{ comment.author.displayName }} - {{ dateStringFormat(comment.created) }}
+			</a>
+			<div class="collapse in" id="{{ comment.id }}">
+				<br />
+				<div ng-bind-html="comment.body | ToHTML"></div>
+			</div>
+		</div>
+		<hr />
+		<h4>Imputaciones</h4>
+		<table class="table table-hover">
+			<tr ng-show="issue.worklogs.length == 0"><td><p>Todavía no hay imputaciones en esta petición.</p></td></tr>
+			<tr ng-repeat="worklog in issue.worklogs  | orderBy: '-started'">
+				<td><p>{{ worklog.author.displayName }}</p></td>
+				<td><p>{{ dateStringFormat(worklog.started) }}</p></td>
+				<td class="text-right"><p>{{ worklog.timeSpent }}</p></td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-xs-4 col-md-3">
+		<h4>Personas</h4>
+		<p ng-show="!!issue.assignee">Informador: {{ issue.creator.displayName }}</p>
+		<p ng-show="!!issue.assignee">Responsable: {{ issue.assignee.displayName }}</p>
+		<p ng-show="!!!issue.assignee">Responsable: Sin asignar</p>
+		<hr />
+		<h4>Detalles</h4>
+		<p>Tipo: {{ issue.issuetype.name }}</p>
+		<p>Estado: <span class="label label-default" ng-class="{
+			'label-success' : issue.status.statusCategory.colorName=='green',
+			'label-info' : issue.status.statusCategory.colorName=='blue',
+			'label-warning' : issue.status.statusCategory.colorName=='yellow',
+			'label-danger' : issue.status.statusCategory.colorName=='red'
+		}">
+			{{ issue.status.name }}
+		</span></p>
+		<hr />
+		<h4>Seguimiento</h4>
+		<p>Estimado: {{ secondsFormat(issue.progress.total) }}</p>
+		<p>Progreso: {{ secondsFormat(issue.progress.progress) }}</p>
+		<div class="progress">
+			<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ issue.progress.percent }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ issue.progress.percent }}%">
+				<span>{{ issue.progress.percent }}%</span>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,42 @@
+<ol class="breadcrumb">
+	<li>JIRA</li>
+	<li>Servicios KONECTA</li>
+	<li class="active">Calendario interno</li>
+</ol>
+
+<div id="calendar"></div>
+
+<div class="modal fade" id="modalTime" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content panel-info">
+			<div class="panel-heading">
+				<h4><i class="fa fa-clock-o" aria-hidden="true"></i> Registrar tiempo</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="form-group col-xs-6">
+						<label>Fecha inicio</label>
+						<input type="date" id="modalTime_FechaI" class="form-control" ng-model="currentRange.startDate" />
+					</div>
+					<div class="form-group col-xs-6">
+						<label>Fecha fin</label>
+						<input type="date" id="modalTime_FechaF" class="form-control" ng-model="currentRange.endDate"/>
+					</div>
+					<div class="form-group col-xs-6">
+						<label>Tarea</label>
+						<select id="modalTime_Tiempo" class="form-control" ng-model="currentRange.task" 
+							ng-options="t.id as t.id + ' - ' + t.summary for t in task | orderBy:'id'" />
+					</div>
+					<div class="form-group col-xs-6">
+						<label>Tiempo</label>
+						<input type="text" id="modalTime_Tiempo" class="form-control" ng-model="currentRange.time" />
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer text-right">
+				<button type="button" class="btn btn-success btn-sm" ng-click="addWorklog()">Cargar</button>
+				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div> 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="jira" lang="es-ES">
+<head>
+	<title>JIRA Custom</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" href="../modules/font-awesome.4.7.0/css/font-awesome.min.css">
+	
+	<script src="../modules/jquery.3.2.1/js/jquery.min.js"></script>
+	
+	<script src="../modules/angularjs.1.5.8/js/angular.min.js"></script>
+	<script src="../modules/angularjs.1.5.8/js/angular-route.min.js"></script>
+
+	<link rel="stylesheet" href="../modules/bootstrap.3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../modules/bootstrap.3.3.7/css/bootstrap-theme.min.css">
+	<script src="../modules/bootstrap.3.3.7/js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" href="../modules/bootstrap.3.3.7/bootstrap-year-calendar/bootstrap-year-calendar.min.css">
+	<script src="../modules/bootstrap.3.3.7/bootstrap-year-calendar/bootstrap-year-calendar.min.js"></script>
+	<script src="../modules/bootstrap.3.3.7/bootstrap-year-calendar/bootstrap-year-calendar.es.js"></script>
+	
+	<script src="../modules/dateformat.js"></script>
+	
+	<link rel="stylesheet" href="css/index.css">
+	
+	<script src="appModule.js"></script>
+	<script src="appFactory.js"></script>
+	<script src="appFilter.js"></script>
+	<script src="appService.js"></script>
+	<script src="appController.js"></script>
+	
+	<script src="login/controller.js"></script>
+    <script src="configuration/controller.js"></script>
+    <script src="jira/timesheet/controller.js"></script>
+	<script src="jira/timesheet/detailsController.js"></script>
+	<script src="tempo/approvalstatuses/controller.js"></script>
+	<script src="custom/calendario/controller.js"></script>
+</head>
+<body ng-controller="appController" style="position: absolute; top: 51px; bottom: 0px; left: 0; right: 0; overflow-y: auto; padding-top: 20px">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand"><i class="fa fa-jira" aria-hidden="true"></i> {{ manifest.name }}</a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav" ng-show="_userLogin">
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servicios JIRA <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#/jira/timesheet">Tiempo imputado</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servicios TEMPO <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#/tempo/approvalstatuses">Periodos de trabajo</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Servicios KONECTA <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#/custom/calendario">Calendario interno</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#/help"><i class="fa fa-question" aria-hidden="true"></i></a></li>
+				<li><a href="#/configuration"><i class="fa fa-gear" aria-hidden="true"></i></a></li>
+				<li ng-show="_userLogin"><a href="" ng-click="exit()"><i class="fa fa-power-off" aria-hidden="true"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="container" >
+	<div ng-view></div>
+</div>
+
+<footer class="fixed-bottom">
+	<p>Copyright &copy; 2017 | Alejandro M. Pinto Rodr&iacute;guez</p>
+</footer>
+
+<div class="animationload" ng-show="pageLoading">
+	<div class="osahanloading"></div>
+</div>
+
+</body>
+</html>

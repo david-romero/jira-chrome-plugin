@@ -1,0 +1,160 @@
+<ol class="breadcrumb">
+	<li>JIRA</li>
+	<li>Servicios JIRA</li>
+	<li class="active">Tiempo imputado</li>
+</ol>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<b><i class="fa fa-table" aria-hidden="true"></i> Tiempos imputados</b>
+	</div>
+	<div class="panel-body" style="overflow-x: auto; padding: 0 !important">
+		<table class="table table-hover" style="margin-bottom: 0">
+			<tr>
+				<th class="info"></th>
+				<th ng-repeat="currentDate in dateRange" ng-class="isWeekendClass(currentDate)">
+					{{ currentDate.toLocaleDateString( 'es-es' , { year : 'numeric' , month : '2-digit' , day : '2-digit' } ) }}
+				</th>
+			</tr>
+			<tr ng-repeat="currentIssue in task.issues">
+				<td class="info">
+					<a style="white-space:nowrap" href="#/jira/timesheet/issue/{{ currentIssue.key }}">
+						{{ currentIssue.key }}
+					</a>
+				</td>
+				<td ng-repeat="currentDate in dateRange" ng-class="isWeekendClass(currentDate)" class="addWorklog">
+					<span class="col-xs-12 label label-default" ng-repeat="currentWork in (currentIssue.worklogs | WorklogsFilter:currentDate:user.name)">{{ secondsFormat(currentWork.timeSpentSeconds) }}</span>
+					<span class="col-xs-12 label label-danger" ng-if="!isWeekend(currentDate)" ng-click="showModalTime(currentIssue, currentDate)">+</span>
+					
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td ng-repeat="time in totalWork track by $index"><span class="col-xs-12 label label-success" ng-if="time!=0">{{ secondsFormat(time) }}</span></td>
+			</tr>
+		</table>
+	</div>
+	<div class="panel-footer text-right">
+		<button type="button" class="btn btn-primary btn-sm" ng-click="refreshIssues()">Refrescar</button>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<b><i class="fa fa-search" aria-hidden="true"></i> Incidencias asignadas/observadas</b>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="form-group col-xs-12">
+				<label>Incidencia</label>
+				<select class="form-control" ng-model="selectedAssigneeIssue" style="font-family: 'FontAwesome','Helvetica Neue',Helvetica,Arial,sans-serif"
+						ng-options="t as ((user.name == t.assignee) ? '&#xf007;&nbsp;&nbsp;&nbsp;' : '&#xf06e;&nbsp;&nbsp;')+t.key+' - '+t.summary for t in issuesAssignee.issues | orderBy:'key'">
+				</select>
+			</div>
+		</div>
+		<div class="row" ng-show="selectedAssigneeIssue!=null">
+			<div class="col-xs-12">
+				<label>Descripción</label>
+				<div ng-bind-html="selectedAssigneeIssue.description | ToHTML"></div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer text-right">
+		<a ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-success btn-sm" href="#/jira/timesheet/issue/{{ selectedAssigneeIssue.key }}">Detalles</a>
+		<button ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-success btn-sm" ng-click="showModalTime(selectedAssigneeIssue)">Imputar tiempo</button>
+		<button ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-info btn-sm" ng-click="selectedAssigneeIssue = null">Limpiar</button>
+		<button type="button" class="btn btn-primary btn-sm" ng-click="getIssuesAssignee()">Refrescar</button>
+	</div>
+</div>
+
+<div class="modal fade" id="modalTime" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content panel-info">
+			<div class="panel-heading">
+				<h4><i class="fa fa-clock-o" aria-hidden="true"></i> {{ currentIssueDetail.key }} - {{ currentIssueDetail.summary }}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="form-group col-xs-6">
+						<label>Fecha</label>
+						<input type="date" id="modalTime_Fecha" class="form-control" ng-model="dateWorklog" ng-change="dateWorklogChange($event)"/>
+					</div>
+					<div class="form-group col-xs-6">
+						<label>Tiempo</label>
+						<input type="text" id="modalTime_Tiempo" class="form-control" ng-model="timeWorklog" ng-keypress="timeWorklogEnter($event)" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-xs-12">
+						<label class="comment collapsed" data-toggle="collapse" href="#collapseComment">
+							<i class="fa fa-chevron-down" aria-hidden="true"></i>
+							<i class="fa fa-chevron-up" aria-hidden="true"></i>
+							Comentario
+						</label>
+						<textarea id="collapseComment" class="form-control collapse" rows="5" ng-model="commentWorklog"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer text-right">
+				<button type="button" class="btn btn-default btn-sm" ng-click="addWorklog(true)">Añadir otra</button>
+				<button type="button" class="btn btn-success btn-sm" ng-click="addWorklog(false)">Añadir</button>
+				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<div class="modal fade" id="modalSummary" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content panel-info">
+			<div class="panel-heading">
+				<h4><i class="fa fa-info-circle" aria-hidden="true"></i> {{ currentIssueDetail.key }} - {{ currentIssueDetail.summary }}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-8">
+						<label>Descripción:</label>
+						<div style="white-space:pre-wrap;height:150px;overflow:auto;">{{ currentIssueDetail.description }}</div>
+					</div>
+					<div class="col-xs-4">
+						<label>Seguimiento:</label>
+						<p>Estimado: {{ secondsFormat(currentIssueDetail.progress.total) }}</p>
+						<p>Progreso: {{ secondsFormat(currentIssueDetail.progress.progress) }}</p>
+						<div class="progress">
+							<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ currentIssueDetail.progress.percent }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ currentIssueDetail.progress.percent }}%">
+								<span>{{ currentIssueDetail.progress.percent }}%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<div class="row">
+					<div class="col-xs-4">
+						<label>Estado:</label>
+					</div>
+					<div class="col-xs-8">
+						<span class="label label-default" ng-class="{
+							'label-success' : currentIssueDetail.status.statusCategory.colorName=='green',
+							'label-info' : currentIssueDetail.status.statusCategory.colorName=='blue',
+							'label-warning' : currentIssueDetail.status.statusCategory.colorName=='yellow',
+							'label-danger' : currentIssueDetail.status.statusCategory.colorName=='red'
+						}">
+							{{ currentIssueDetail.status.name }}
+						</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label>Tipo:</label>
+					</div>
+					<div class="col-xs-8">
+						<span>{{ currentIssueDetail.issuetype.name }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer text-right">
+				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div> 
