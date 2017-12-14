@@ -1,15 +1,16 @@
 app.controller("appController", ["$rootScope", "$scope", "$location", "JiraService", "JiraTempoService", "TextFactory",
 function($rootScope, $scope, $location, JiraService, JiraTempoService, TextFactory) {
 
-    $rootScope._userLogin = false; 		// bool - el usuario esta o no logado
-	$rootScope._profile = null; 		// json - perfil del usuario de JIRA
-	$rootScope._server = null;			// string - servidor de JIRA configurado
-	$rootScope._time = null;			// int - dias a mostrar en la tabla de tiempo imputado
-	$rootScope._periods = null;			// int - numero de periodos de trabajo a mostrar
-	$rootScope._notifications = null;	// json<bool> - notificaciones activas (ver funcion validaStorage)
+    $rootScope._userLogin = false; 		// bool - user is signed in Jira
+	$rootScope._profile = null; 		// json - JIRA Profile
+	$rootScope._server = null;			// string - JIRA server
+	$rootScope._time = null;			// int - days to show in time tracking table
+	$rootScope._periods = null;			// int - periods
+	$rootScope._notifications = null;	// json<bool> - active notifications
 
-	$rootScope.manifest = chrome.runtime.getManifest();
-	$rootScope.isDebug = $rootScope.manifest.app.isDebug;
+	//$rootScope.manifest = chrome.runtime.getManifest();
+	//$rootScope.isDebug = $rootScope.manifest.app.isDebug;
+	$rootScope.isDebug = true;
 	
 	$rootScope.pageLoading = false;
 

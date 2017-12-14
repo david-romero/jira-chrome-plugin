@@ -1,12 +1,12 @@
 <ol class="breadcrumb">
 	<li>JIRA</li>
-	<li>Servicios JIRA</li>
-	<li class="active">Tiempo imputado</li>
+	<li>Time Tracking</li>
+	<li class="active">Registed Time</li>
 </ol>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<b><i class="fa fa-table" aria-hidden="true"></i> Tiempos imputados</b>
+		<b><i class="fa fa-table" aria-hidden="true"></i> Time Tracking</b>
 	</div>
 	<div class="panel-body" style="overflow-x: auto; padding: 0 !important">
 		<table class="table table-hover" style="margin-bottom: 0">
@@ -35,18 +35,18 @@
 		</table>
 	</div>
 	<div class="panel-footer text-right">
-		<button type="button" class="btn btn-primary btn-sm" ng-click="refreshIssues()">Refrescar</button>
+		<button type="button" class="btn btn-primary btn-sm" ng-click="refreshIssues()">Refresh</button>
 	</div>
 </div>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<b><i class="fa fa-search" aria-hidden="true"></i> Incidencias asignadas/observadas</b>
+		<b><i class="fa fa-search" aria-hidden="true"></i> Issues assigned and observed</b>
 	</div>
 	<div class="modal-body">
 		<div class="row">
 			<div class="form-group col-xs-12">
-				<label>Incidencia</label>
+				<label>Issue</label>
 				<select class="form-control" ng-model="selectedAssigneeIssue" style="font-family: 'FontAwesome','Helvetica Neue',Helvetica,Arial,sans-serif"
 						ng-options="t as ((user.name == t.assignee) ? '&#xf007;&nbsp;&nbsp;&nbsp;' : '&#xf06e;&nbsp;&nbsp;')+t.key+' - '+t.summary for t in issuesAssignee.issues | orderBy:'key'">
 				</select>
@@ -54,16 +54,16 @@
 		</div>
 		<div class="row" ng-show="selectedAssigneeIssue!=null">
 			<div class="col-xs-12">
-				<label>Descripción</label>
+				<label>Description</label>
 				<div ng-bind-html="selectedAssigneeIssue.description | ToHTML"></div>
 			</div>
 		</div>
 	</div>
 	<div class="panel-footer text-right">
-		<a ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-success btn-sm" href="#/jira/timesheet/issue/{{ selectedAssigneeIssue.key }}">Detalles</a>
-		<button ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-success btn-sm" ng-click="showModalTime(selectedAssigneeIssue)">Imputar tiempo</button>
-		<button ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-info btn-sm" ng-click="selectedAssigneeIssue = null">Limpiar</button>
-		<button type="button" class="btn btn-primary btn-sm" ng-click="getIssuesAssignee()">Refrescar</button>
+		<a ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-success btn-sm" href="#/jira/timesheet/issue/{{ selectedAssigneeIssue.key }}">Details</a>
+		<button ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-success btn-sm" ng-click="showModalTime(selectedAssigneeIssue)">Register time</button>
+		<button ng-show="selectedAssigneeIssue!=null" type="button" class="btn btn-info btn-sm" ng-click="selectedAssigneeIssue = null">Clean</button>
+		<button type="button" class="btn btn-primary btn-sm" ng-click="getIssuesAssignee()">Refresh</button>
 	</div>
 </div>
 
@@ -76,11 +76,11 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="form-group col-xs-6">
-						<label>Fecha</label>
+						<label>Date</label>
 						<input type="date" id="modalTime_Fecha" class="form-control" ng-model="dateWorklog" ng-change="dateWorklogChange($event)"/>
 					</div>
 					<div class="form-group col-xs-6">
-						<label>Tiempo</label>
+						<label>Time</label>
 						<input type="text" id="modalTime_Tiempo" class="form-control" ng-model="timeWorklog" ng-keypress="timeWorklogEnter($event)" />
 					</div>
 				</div>
@@ -89,16 +89,16 @@
 						<label class="comment collapsed" data-toggle="collapse" href="#collapseComment">
 							<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							<i class="fa fa-chevron-up" aria-hidden="true"></i>
-							Comentario
+							Comment
 						</label>
 						<textarea id="collapseComment" class="form-control collapse" rows="5" ng-model="commentWorklog"></textarea>
 					</div>
 				</div>
 			</div>
 			<div class="panel-footer text-right">
-				<button type="button" class="btn btn-default btn-sm" ng-click="addWorklog(true)">Añadir otra</button>
-				<button type="button" class="btn btn-success btn-sm" ng-click="addWorklog(false)">Añadir</button>
-				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-default btn-sm" ng-click="addWorklog(true)">Add another</button>
+				<button type="button" class="btn btn-success btn-sm" ng-click="addWorklog(false)">Add</button>
+				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -113,11 +113,11 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-8">
-						<label>Descripción:</label>
+						<label>Description:</label>
 						<div style="white-space:pre-wrap;height:150px;overflow:auto;">{{ currentIssueDetail.description }}</div>
 					</div>
 					<div class="col-xs-4">
-						<label>Seguimiento:</label>
+						<label>Tracing:</label>
 						<p>Estimado: {{ secondsFormat(currentIssueDetail.progress.total) }}</p>
 						<p>Progreso: {{ secondsFormat(currentIssueDetail.progress.progress) }}</p>
 						<div class="progress">
@@ -130,7 +130,7 @@
 				<hr />
 				<div class="row">
 					<div class="col-xs-4">
-						<label>Estado:</label>
+						<label>Status:</label>
 					</div>
 					<div class="col-xs-8">
 						<span class="label label-default" ng-class="{
@@ -153,7 +153,7 @@
 				</div>
 			</div>
 			<div class="panel-footer text-right">
-				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>

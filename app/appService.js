@@ -33,7 +33,9 @@ app.service("JiraService", ["$rootScope", "$http", "TextFactory", function($root
 	};
 	
 	this.issues = function (user, dateIni, dateEnd) {
-		var url = $rootScope._server + "/rest/api/2/search?startIndex=0&jql=issueFunction+in+workLogged(%22by+{0}+after+{1}%2F{2}%2F{3}+before+{4}%2F{5}%2F{6}%22)&fields=key&maxResults=1000";
+		var dateIniParsed = dateIni.toISOString().slice(0,10).replace(/-/g,"%2F");
+		var dateEmdParsed = dateEnd.toISOString().slice(0,10).replace(/-/g,"%2F");
+		var url = $rootScope._server + "/rest/api/2/search?startIndex=0&jql=worklogAuthor+=+currentUser()+AND+worklogDate+>=+'" + dateIniParsed + "'+AND+worklogDate+<=+'" + dateEmdParsed + "'";
 		url = TextFactory.format(url, [user, dateIni.getFullYear(), dateIni.getMonth()+1, dateIni.getDate(), dateEnd.getFullYear(), dateEnd.getMonth()+1, dateEnd.getDate()]);
 		return $http.get(url);
 	};

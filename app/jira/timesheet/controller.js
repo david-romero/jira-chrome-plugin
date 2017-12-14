@@ -25,7 +25,7 @@ function($rootScope, $scope, $filter, DateFactory, TimeFactory, JiraService) {
 	
 	$scope.dateWorklogChange = function (ev) {
 		if ($scope.dateWorklog.getDay() == 0 || $scope.dateWorklog.getDay() == 6) {
-			alert("No se puede imputar tiempo en fin de semana. Seleccione otra fecha.");
+			alert("You can not register time during the weekend. Select another date.");
 			$scope.dateWorklog = null;
 		}
 	};
@@ -122,11 +122,11 @@ function($rootScope, $scope, $filter, DateFactory, TimeFactory, JiraService) {
 	
 	$scope.addWorklog = function (end) {
 		if ($scope.dateWorklog == null || typeof $scope.dateWorklog == 'undefined') {
-			alert("El campo FECHA es obligatorio");
+			alert("Field Date is mandatory");
 			return false;
 		};
 		if (typeof $scope.timeWorklog == 'undefined' || $scope.timeWorklog.trim() == '') {
-			alert("El campo TIEMPO es obligatorio");
+			alert("Field Time is mandatory");
 			return false;
 		}
 		JiraService.addWorklog($scope.currentIssueDetail.key, $scope.dateWorklog, $scope.timeWorklog, $scope.commentWorklog).success(function (data) {

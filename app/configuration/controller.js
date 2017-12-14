@@ -15,10 +15,10 @@ function($rootScope, $scope, $location, JiraService) {
 	});
 
 	$scope.range = [
-		{'value': '6', 'text': 'Imputaciones de la última semana'},
-		{'value': '13', 'text': 'Imputaciones de las últimas dos semanas'},
-		{'value': '20', 'text': 'Imputaciones de las últimas tres semanas'},
-		{'value': '27', 'text': 'Imputaciones de las últimas cuatro semanas'}
+		{'value': '6', 'text': 'Last week'},
+		{'value': '13', 'text': 'Last two weeks'},
+		{'value': '20', 'text': 'Last three weeks'},
+		{'value': '27', 'text': 'Last four weeks'}
 	];
 	
 	$scope.save = function () {
