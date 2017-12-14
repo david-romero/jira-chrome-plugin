@@ -22,7 +22,7 @@ function($rootScope, $scope, $location, JiraService) {
 	];
 	
 	$scope.save = function () {
-        if (!$scope.server || !$scope.time || !$scope.periods) {
+        if (!$scope.server || !$scope.time) {
             return;
         }
 		

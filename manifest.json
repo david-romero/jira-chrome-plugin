@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "JIRA Custom",
 	"author": "Alejandro M. Pinto Rodriguez - David Romero Alcaide",
-	"version": "2017.11.17",
+	"version": "1.0.0",
 	"description": "JIRA App for Time Trackign",
 	"app": {
 		"background": {
