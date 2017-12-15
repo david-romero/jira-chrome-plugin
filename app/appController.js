@@ -8,9 +8,8 @@ function($rootScope, $scope, $location, JiraService, JiraTempoService, TextFacto
 	$rootScope._periods = null;			// int - periods
 	$rootScope._notifications = null;	// json<bool> - active notifications
 
-	//$rootScope.manifest = chrome.runtime.getManifest();
-	//$rootScope.isDebug = $rootScope.manifest.app.isDebug;
-	$rootScope.isDebug = true;
+	$rootScope.manifest = chrome.runtime.getManifest();
+	$rootScope.isDebug = $rootScope.manifest.app.isDebug;
 	
 	$rootScope.pageLoading = false;
 
@@ -114,12 +113,12 @@ function($rootScope, $scope, $location, JiraService, JiraTempoService, TextFacto
 					} else {
 						$location.path("login");
 						$scope.$apply();
-						if ($rootScope._notifications.SesionExpirada) {
-							chrome.notifications.create("SesionExpirada", {
+						if ($rootScope._notifications.ExpiredSession) {
+							chrome.notifications.create("ExpiredSession", {
 								type: "basic",
 								iconUrl: "../icons/time64.png",
-								title: "Su sesión ha expirado",
-								message: "Su sesión ha expirado. Por favor, vuelva a iniciar sesión.",
+								title: "Your session has expired",
+								message: "Your session has expired. Please, sign in again.",
 								requireInteraction: true
 							}, function(notificationId) {});
 						}
@@ -127,31 +126,7 @@ function($rootScope, $scope, $location, JiraService, JiraTempoService, TextFacto
 				}
 			});
 		}
-	}, 1000*60); // cada minuto
-
-	setInterval(function() { // Notificaciones periodos de aprobación pendientes
-		if ($rootScope._userLogin && !!$rootScope._profile && !!$rootScope._profile.name) {
-			JiraTempoService.getTimesheetApprovalStatuses($rootScope._profile.name).success(function(data){
-				var pendiente = 0;
-				for (var i = 0; i < data.length; i++) {
-					if (data[i].status == "open" || data[i].status == "ready_to_submit")
-						pendiente++;
-				}
-				if (pendiente > 1 && $rootScope._notifications.PeriodosAprobacion) {
-					chrome.notifications.create("PeriodosAprobacion", {
-						type: "basic",
-						iconUrl: "../icons/time64.png",
-						title: "Periodos de aprobación",
-						message: "Existen periodos de trabajo que no se han enviado para aprobación. Reviselos.",
-						buttons: [  
-							{title: "Dejar de recibir estas notificaciones", iconUrl: "../icons/disablenotification32.png"}
-						],
-						requireInteraction: true
-					}, function(notificationId) {});
-				}
-			})
-		};
-	}, 1000*60*60); // cada hora
+	}, 1000*60); // every minute
 	
 	if (!$rootScope.isDebug)
 		document.oncontextmenu = function(){return false};
