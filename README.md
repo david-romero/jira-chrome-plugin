@@ -42,7 +42,7 @@ $ git clone  https://github.com/david-romero/jira-chrome-plugin.git
 
 #### Executable
 
-1. Download [executable](https://github.com/david-romero/jira-chrome-plugin/releases/jira-chrome-plugin-latest.crx)
+1. Download [executable](https://github.com/david-romero/jira-chrome-plugin/blob/master/releases/jira-chrome-plugin-latest.crx)
 2. Open Chrome
 2. Access to [Extensions](chrome://extensions/)
 3. Enable "developer mode"
